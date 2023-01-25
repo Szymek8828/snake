@@ -66,87 +66,126 @@ using namespace std;
 		cin>>x;
 		cout<<"Podaj wysokosc planszy: "<<endl;
 		cin>>y;
-		system("cls");
 		
-		char plansza[x][y]={};
 		char snake='O';
 		srand(time(NULL));
 		int SnakeX=1+rand()%(x-2);
 		int SnakeY=1+rand()%(y-2);
+		char fruit='x';
+		int fruitX=1+rand()%(x-2);
+		int fruitY=1+rand()%(y-2);
 		
-		
-
-		for(int i=0;i<y;i++){
-			for(int j=0;j<x;j++){
-				if((j==0||j==y-1)&&(i!=0&&i!=y-1)){
-					plansza[j][i]=186;
-				}
-				else if((j!=0&&j!=x-1)&&(i==0||i==y-1)){
-				plansza[j][i]=205;
-				}
-	
-			else{
-				plansza[j][i]=' ';
-			}
+		char ** plansza;
+		plansza=new char * [x];
+		for(int i=0;i<x;i++){
+			plansza[i]=new char [y];
+			
 		}
-		plansza[SnakeX][SnakeY]=snake;
-		plansza[0][0]=201;
-		plansza[x-1][0]=187;
-		plansza[x-1][y-1]=188;
-		plansza[0][y-1]=200;
 		
 		for(int i=0;i<y;i++){
 			for(int j=0;j<x;j++){
-				if(plansza[j][i]=='*'){
-					cout<<char(2);
-				}
-				else{
-					cout<<plansza[j][i];
-				}
+				plansza[i][j]=' ';
 			}
-			cout<<endl;
+
 		}		
 		
-		int k=1;
-		int l=0;
-		int m;
-		int klik[1][2]={};
-
-//		while(true){
-//			klik[0][0]=getch();
-//			if(kbhit()){
-//			klik[0][1]=getch();
-//			}	
-//			if(klik[0][0]==sterowanie[0][0] && klik[0][1]==sterowanie[0][1]){
-//				plansza[SnakeX][SnakeY-l]=' ';
-//				plansza[SnakeX][SnakeY-k]=snake;
-//
-//				}
-//				k++;
-//				l++;
-//				system("cls");
-//				for(int i=0;i<y;i++){
-//					cout<<endl;
-//					for(int j=0;j<x;j++){
-//						cout<<plansza[i][j];
-//					}
-//				}
-//			}
-//			 if(klik[0][0]==sterowanie[1][0] && klik[0][1]==sterowanie[1][1]){
-//				plansza[SnakeX][SnakeY+l]=' ';
-//				plansza[SnakeX][SnakeY+k]=snake;
-//				
-//				k++;
-//				l++;
-//				system("cls");
-//				for(int i=0;i<y;i++){
-//					cout<<endl;
-//					for(int j=0;j<x;j++){
-//						cout<<plansza[i][j];
-//					}
-//				}
-//			}
+		for(int i=0;i<y;i++){
+			cout<<endl;
+			for(int j=0;j<x;j++){
+				plansza[0][j]='*';
+				plansza[x-1][j]='*';
+				plansza[i][0]='*';
+				plansza[i][y-1]='*';
+			}
 		}
+		system("cls");
+		
+		int score=0;		
+		int klik[1][2]={};
+		system("cls");
+		cout<<"Kliknij jeden z przyciskow, aby zaczac";
+		while(true){
+			plansza[SnakeX][SnakeY]=snake;
+			plansza[fruitX][fruitY]=fruit;
+			klik[0][0]=getch();
+			if(kbhit()){
+			klik[0][1]=getch();
+			}				
+			if(klik[0][0]==sterowanie[0][0] && klik[0][1]==sterowanie[0][1]){
+				if(SnakeY==1){
+					plansza[SnakeX][SnakeY]=' ';
+					plansza[SnakeX][SnakeY+x-3]=snake;
+					SnakeY+=x-3;
+				}
+				else{
+					plansza[SnakeX][SnakeY]=' ';
+					plansza[SnakeX][SnakeY-1]=snake;
+					plansza[SnakeX][SnakeY]=plansza[SnakeX][SnakeY--];
+				}
+			}
+				
+			
+			else if(klik[0][0]==sterowanie[1][0] && klik[0][1]==sterowanie[1][1]){
+			 	if(SnakeY==x-2){
+			 		plansza[SnakeX][SnakeY]=' ';
+					plansza[SnakeX][SnakeY+3-x]=snake;
+					SnakeY+=3-x;
+				}
+				else{
+					plansza[SnakeX][SnakeY]=' ';
+					plansza[SnakeX][SnakeY+1]=snake;
+					plansza[SnakeX][SnakeY]=plansza[SnakeX][SnakeY++];	
+				}
+			}
+			
+			else if(klik[0][0]==sterowanie[2][0] && klik[0][1]==sterowanie[2][1]){
+			 	if(SnakeX==1){
+			 		plansza[SnakeX][SnakeY]=' ';
+					plansza[SnakeX+y-3][SnakeY]=snake;
+					SnakeX+=y-3;
+				}
+				else{
+				 
+					plansza[SnakeX][SnakeY]=' ';
+					plansza[SnakeX-1][SnakeY]=snake;
+					plansza[SnakeX][SnakeY]=plansza[SnakeX--][SnakeY];
+				}
+			}
+			
+			else if(klik[0][0]==sterowanie[3][0] && klik[0][1]==sterowanie[3][1]){
+				if(SnakeX==y-2){
+				 	plansza[SnakeX][SnakeY]=' ';
+					plansza[SnakeX+3-y][SnakeY]=snake;
+					SnakeX+=3-y;
+				}	
+				else{
+					plansza[SnakeX][SnakeY]=' ';
+					plansza[SnakeX+1][SnakeY]=snake;
+					plansza[SnakeX][SnakeY]=plansza[SnakeX++][SnakeY];
+				}
+			}
+
+			else{
+				continue;
+			}
+			
+			if(plansza[SnakeX][SnakeY]==plansza[fruitX][fruitY]){
+				fruitX=1+rand()%(x-2);
+				fruitY=1+rand()%(y-2);
+				plansza[fruitX][fruitY]=fruit;
+				score++;
+			}
+			
+			system("cls");
+			
+			for(int i=0;i<y;i++){
+				cout<<endl;
+				for(int j=0;j<x;j++){
+					cout<<plansza[i][j];
+					}
+				}
+				cout<<endl<<"Wynik: "<<score;						
+			}
 		
 		return 0;
 	}
